@@ -220,8 +220,6 @@ public class MuteHandler {
             FileInputStream fileIn = new FileInputStream("C:\\Users\\kevin\\IdeaProjects\\EchoBot\\src\\main\\java\\me\\greenadine\\echobot\\data\\muted.ser");
             ObjectInputStream in = new ObjectInputStream(fileIn);
             map = (HashMap) in.readObject();
-
-            System.out.println("Loaded data from file 'muted.ser'.");
         } catch (EOFException e) {
             System.out.println("Nothing found in file 'muted.ser'.");
             map = new HashMap<>();

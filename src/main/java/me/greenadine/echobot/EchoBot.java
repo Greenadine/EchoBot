@@ -32,7 +32,7 @@ public class EchoBot {
     public static Phrases wish;
 
     public static void main(String[] args) {
-        String token = "NjQyMTkyMjQ5NTYzOTA2MDUw.XcrxcQ.BiYCt-0pZ4fAmCRsG3pyp0VR1O4";
+        String token = "NjQyMTkyMjQ5NTYzOTA2MDUw.XdIYrg.vWH8wmh4OT65ni9aLJDqcbGqD-4";
 
         bot = new DiscordApiBuilder().setToken(token).login().join();
         econ = new Economy();
