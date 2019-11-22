@@ -11,7 +11,7 @@ import java.util.StringJoiner;
 
 public class MuteHandler {
 
-    private HashMap<Long, Long> mute = load();
+    private HashMap<Long, Integer> mute = load();
 
     private Role role = EchoBot.bot.getRoleById(645763033905365022L).get();
 
@@ -67,11 +67,11 @@ public class MuteHandler {
      * @param duration The duration for the mute
      * @return boolean
      */
-    public boolean mute(User user, long duration) {
+    public boolean mute(User user, int duration) {
         if (!isMuted(user)) {
             giveRole(user);
 
-            mute.put(user.getId(), ((duration) * 60000L));
+            mute.put(user.getId(), duration * 60000);
             reload();
             return true;
         } else {
@@ -101,9 +101,9 @@ public class MuteHandler {
      * @param user The user
      * @return int
      */
-    public long getMuteDuration(User user) {
+    public int getMuteDuration(User user) {
         if (isMuted(user)) {
-            return mute.get(user.getId()) / 60000L;
+            return mute.get(user.getId());
         } else {
             return -1;
         }
@@ -116,16 +116,11 @@ public class MuteHandler {
      */
     public String getFormattedMuteDuration(User user) {
         if (isMuted(user)) {
-            long duration = getMuteDuration(user);
+            int duration = getMuteDuration(user);
 
-            int seconds = (int) (duration / 1000) % 60;
-            int minutes = (int) ((duration / (1000*60)) % 60);
-            int hours   = (int) ((duration / (1000*60*60)) % 24);
-
-            System.out.println(duration + " milliseconds");
-            System.out.println(seconds + " seconds");
-            System.out.println(minutes + " minutes");
-            System.out.println(hours + " hours");
+            int seconds = (duration / 1000) % 60;
+            int minutes = ((duration / (1000*60)) % 60);
+            int hours   = ((duration / (1000*60*60)) % 24);
 
             StringJoiner joiner = new StringJoiner(", ");
 
@@ -163,11 +158,11 @@ public class MuteHandler {
      * @param amount The amount to reduce the duration with
      * @return boolean
      */
-    public boolean reduceMuteDuration(User user, long amount) {
+    public boolean reduceMuteDuration(User user, int amount) {
         if (isMuted(user)) {
-            mute.put(user.getId(), mute.get(user) - amount);
+            mute.put(user.getId(), mute.get(user.getId()) - amount);
 
-            if (mute.get(user) <= 0) {
+            if (mute.get(user.getId()) <= 0) {
                 unmute(user);
             }
             return true;
@@ -213,8 +208,8 @@ public class MuteHandler {
      * Deserialize data from file and load into bot.
      * @return HashMap<User, Integer>
      */
-    private HashMap<Long, Long> load(){
-        HashMap<Long, Long> map;
+    private HashMap<Long, Integer> load(){
+        HashMap<Long, Integer> map;
 
         try {
             FileInputStream fileIn = new FileInputStream("C:\\Users\\kevin\\IdeaProjects\\EchoBot\\src\\main\\java\\me\\greenadine\\echobot\\data\\muted.ser");

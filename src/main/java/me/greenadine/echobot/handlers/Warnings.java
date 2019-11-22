@@ -96,7 +96,11 @@ public class WarningHandler {
      * @return int
      */
     public int getWarningSize(User user) {
-        return warnings.get(user.getId()).size();
+        if (hasData(user)) {
+            return warnings.get(user.getId()).size();
+        } else {
+            return 0;
+        }
     }
 
 
