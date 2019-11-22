@@ -27,14 +27,19 @@ public class TopEconCommand implements MessageCreateListener {
 
             List<Entry<Long, Integer>> top = econ.getTop(10);
 
-            EmbedBuilder embed = new EmbedBuilder().setTitle("Top " + top.size() + " Users - Gold").setColor(Color.CYAN)
-                    .setThumbnail(EchoBot.bot.getYourself().getAvatar());
+            EmbedBuilder embed = new EmbedBuilder()
+                    .setTitle("Top " + top.size() + " Users - Gold")
+                    .setColor(Color.CYAN);
 
             for (int i = 0; i < top.size(); i++) {
                 Entry<Long, Integer> entry = top.get(i);
                 User user = EchoBot.bot.getCachedUserById(entry.getKey()).get();
 
                 embed.addField("#" + (i + 1) + " - " + user.getName(), econ.getBalance(user) + " Gold");
+
+                if (i == 0) {
+                    embed.setThumbnail(user.getAvatar());
+                }
             }
 
             handler.reply(embed);

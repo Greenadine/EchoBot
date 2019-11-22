@@ -4,9 +4,8 @@ import me.greenadine.echobot.EchoBot;
 import me.greenadine.echobot.handlers.CommandHandler;
 import me.greenadine.echobot.handlers.PermissionsHandler;
 import me.greenadine.echobot.handlers.TagHandler;
-import me.greenadine.echobot.handlers.WarningHandler;
+import me.greenadine.echobot.handlers.Warnings;
 import me.greenadine.echobot.objects.Warning;
-import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.permission.PermissionType;
 import org.javacord.api.entity.user.User;
 import org.javacord.api.event.message.MessageCreateEvent;
@@ -16,7 +15,7 @@ import java.util.StringJoiner;
 
 public class WarningGiveCommand implements MessageCreateListener {
 
-    private WarningHandler warnings = EchoBot.warnings;
+    private Warnings warnings = EchoBot.warnings;
 
     @Override
     public void onMessageCreate(MessageCreateEvent e) {
@@ -75,7 +74,12 @@ public class WarningGiveCommand implements MessageCreateListener {
                     handler.reply("Warning has been issued to user. Warning description:", warning.toEmbed());
 
                     tagged.openPrivateChannel().thenAcceptAsync(pch -> pch.sendMessage("You've received a warning. Details about the warning are below.", warning.toEmbed()));
-                    tagged.openPrivateChannel().thenAcceptAsync(pch -> pch.sendMessage("You currently have " + warnings.getWarningSize(tagged) + " warning(s). At 5 warnings you will be (temporarily) banned. Be sure to carefully read the rules once more."));
+
+                    if (warnings.getWarningSize(user) >= 5) {
+                        tagged.openPrivateChannel().thenAcceptAsync(pch -> pch.sendMessage("You currently have " + warnings.getWarningSize(tagged) + " warning(s). As a result, you may be (temporarily) banned. You will hear from one of the Staff members on the matter."));
+                    } else {
+                        tagged.openPrivateChannel().thenAcceptAsync(pch -> pch.sendMessage("You currently have " + warnings.getWarningSize(tagged) + " warning(s). At 5 warnings you will be (temporarily) banned. Be sure to carefully read the rules once more."));
+                    }
 
                     EchoBot.bot.getTextChannelById(645413244164374579L).ifPresent(channel -> channel.sendMessage("Warning issued", warning.toEmbed().setTimestampToNow()));
 

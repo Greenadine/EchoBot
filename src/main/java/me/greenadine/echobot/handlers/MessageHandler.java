@@ -1,6 +1,8 @@
 package me.greenadine.echobot.handlers;
 
+import org.javacord.api.entity.channel.Channel;
 import org.javacord.api.entity.channel.TextChannel;
+import org.javacord.api.entity.message.Message;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.user.User;
 import org.javacord.api.event.message.MessageCreateEvent;
@@ -12,6 +14,7 @@ import java.util.Optional;
 
 public class MessageHandler {
 
+    private Message message;
     private TextChannel channel;
     private Optional<User> user;
 
@@ -20,6 +23,7 @@ public class MessageHandler {
     public MessageHandler(MessageCreateEvent e) {
         String[] args = e.getMessage().getContent().split("\\s+"); // Split message per whitespace.
 
+        message = e.getMessage();
         channel = e.getChannel();
         user = e.getMessage().getUserAuthor();
 
@@ -30,6 +34,30 @@ public class MessageHandler {
 
             arguments.add(s);
         }
+    }
+
+    /**
+     * Get the content of the message.
+     * @return String
+     */
+    public String getMessage() {
+        return message.getContent();
+    }
+
+    /**
+     * Get the instance of the message.
+     * @return Message
+     */
+    public Message getMessageInstance() {
+        return message;
+    }
+
+    /**
+     * Get the channel where the message was sent in.
+     * @return Channel
+     */
+    public Channel getChannel() {
+        return channel;
     }
 
     /**

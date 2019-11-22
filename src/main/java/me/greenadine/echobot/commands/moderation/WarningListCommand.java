@@ -4,19 +4,15 @@ import me.greenadine.echobot.EchoBot;
 import me.greenadine.echobot.handlers.CommandHandler;
 import me.greenadine.echobot.handlers.PermissionsHandler;
 import me.greenadine.echobot.handlers.TagHandler;
-import me.greenadine.echobot.handlers.WarningHandler;
-import me.greenadine.echobot.objects.Warning;
-import org.javacord.api.entity.message.embed.EmbedBuilder;
+import me.greenadine.echobot.handlers.Warnings;
 import org.javacord.api.entity.permission.PermissionType;
 import org.javacord.api.entity.user.User;
 import org.javacord.api.event.message.MessageCreateEvent;
 import org.javacord.api.listener.message.MessageCreateListener;
 
-import java.awt.*;
-
 public class WarningListCommand implements MessageCreateListener {
 
-    private WarningHandler warnings = EchoBot.warnings;
+    private Warnings warnings = EchoBot.warnings;
 
     @Override
     public void onMessageCreate(MessageCreateEvent e) {

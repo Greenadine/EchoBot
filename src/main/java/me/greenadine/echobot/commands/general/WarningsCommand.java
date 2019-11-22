@@ -2,7 +2,7 @@ package me.greenadine.echobot.commands.general;
 
 import me.greenadine.echobot.EchoBot;
 import me.greenadine.echobot.handlers.CommandHandler;
-import me.greenadine.echobot.handlers.WarningHandler;
+import me.greenadine.echobot.handlers.Warnings;
 import me.greenadine.echobot.objects.Warning;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.user.User;
@@ -13,7 +13,7 @@ import java.awt.*;
 
 public class WarningsCommand implements MessageCreateListener {
 
-    private WarningHandler warnings = EchoBot.warnings;
+    private Warnings warnings = EchoBot.warnings;
 
     @Override
     public void onMessageCreate(MessageCreateEvent e) {

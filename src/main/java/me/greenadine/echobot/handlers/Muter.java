@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Set;
 import java.util.StringJoiner;
 
-public class MuteHandler {
+public class Muter {
 
     private HashMap<Long, Integer> mute = load();
 
@@ -182,7 +182,7 @@ public class MuteHandler {
     /**
      * Save data to file, and reload it into the bot.
      */
-    private void reload() {
+    public void reload() {
         save();
         mute = load();
     }

@@ -28,8 +28,9 @@ public class TopRankCommand implements MessageCreateListener {
 
             List<Map.Entry<Long, Integer>> top = lvl.getTop(10);
 
-            EmbedBuilder embed = new EmbedBuilder().setTitle("Top " + top.size() + " Users - Level / XP").setColor(Color.CYAN)
-                    .setThumbnail(EchoBot.bot.getYourself().getAvatar());
+            EmbedBuilder embed = new EmbedBuilder()
+                    .setTitle("Top " + top.size() + " Users - Level / XP")
+                    .setColor(Color.CYAN);
 
             for (int i = 0; i < top.size(); i++) {
                 Map.Entry<Long, Integer> entry = top.get(i);
@@ -37,6 +38,10 @@ public class TopRankCommand implements MessageCreateListener {
                 int xp = lvl.getXp(user);
 
                 embed.addField("#" + (i + 1) + " - " + user.getName(), "Level " + lvl.calculateLevel(xp) + " (" + xp + " XP)");
+
+                if (i == 0) {
+                    embed.setThumbnail(user.getAvatar());
+                }
             }
 
             handler.reply(embed);

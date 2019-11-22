@@ -46,6 +46,7 @@ public class HelpCommand implements MessageCreateListener {
                             .addField("e!rank [user]", "- Check your or someone else's level and leaderboard position.")
                             .addField("e!top-rank", "- Check the levels leaderboard.")
                             .addField("e!warnings", "- Check your received warnings.")
+                            .addField("e!notifications", "- Check or manage your notification settings.")
                             .setColor(Color.CYAN)
                             .setThumbnail(bot.getYourself().getAvatar());
 
@@ -179,6 +180,25 @@ public class HelpCommand implements MessageCreateListener {
                             .setDescription(EchoBot.prefix + handler.getArg(0))
                             .addField("Description:", "Check the warnings you've received in the server so far.")
                             .addField("Usage:", "e!warnings")
+                            .setFooter("Note: <> = required, [] = optional.")
+                            .setColor(Color.CYAN)
+                            .setThumbnail(bot.getYourself().getAvatar());
+
+                    handler.reply(embed);
+                    return;
+                }
+
+                // e!help notifications
+                else if (handler.getArg(0).equalsIgnoreCase("notifications")) {
+                    EmbedBuilder embed = new EmbedBuilder()
+                            .setTitle("EchoBot Help - Command")
+                            .setDescription(EchoBot.prefix + handler.getArg(0))
+                            .addField("Description:", "Check or manage your notification settings.")
+                            .addField("Notification types:", "``repeat``: Get a notification when a new Repeat build is available for everyone.\n " +
+                                    "``repeat-patron``: Get a notification when a new Repeat build is initially released, and only available for patrons. \n" +
+                                    "``patreon``: Get a notification when Shirokoi publishes a new post on his Patreon.\n" +
+                                    "``all``: Opt-in or out of all notifications.")
+                            .addField("Usage:", "e!notifications <type> <on:off|toggle>")
                             .setFooter("Note: <> = required, [] = optional.")
                             .setColor(Color.CYAN)
                             .setThumbnail(bot.getYourself().getAvatar());

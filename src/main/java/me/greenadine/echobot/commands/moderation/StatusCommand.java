@@ -14,8 +14,8 @@ public class StatusCommand implements MessageCreateListener {
 
     private Levels lvl = EchoBot.lvl;
     private Economy econ = EchoBot.econ;
-    private WarningHandler warning = EchoBot.warnings;
-    private MuteHandler mute = EchoBot.mute;
+    private Warnings warning = EchoBot.warnings;
+    private Muter mute = EchoBot.mute;
 
     @Override
     public void onMessageCreate(MessageCreateEvent e) {
@@ -68,6 +68,8 @@ public class StatusCommand implements MessageCreateListener {
                 } else {
                     embed.addInlineField("Muted:", "No");
                 }
+
+                handler.reply(embed);
             }
         }
     }

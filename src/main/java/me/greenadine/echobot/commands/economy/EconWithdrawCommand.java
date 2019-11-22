@@ -55,6 +55,11 @@ public class EconWithdrawCommand implements MessageCreateListener {
                     return;
                 }
 
+                if (amount <= 0) {
+                    handler.reply("Please put in a number higher than 0.");
+                    return;
+                }
+
                 if (!econ.hasData(tagged)) {
                     econ.register(tagged);
                 }
@@ -64,9 +69,9 @@ public class EconWithdrawCommand implements MessageCreateListener {
                     return;
                 }
 
-                econ.add(tagged, amount);
+                econ.withdraw(tagged, amount);
 
-                handler.reply("Withdrew " + amount + " Gold to " + tagged.getNicknameMentionTag() + "'s balance. New balance: " + econ.getBalance(user) + " Gold.");
+                handler.reply("Withdrew " + amount + " Gold from " + tagged.getNicknameMentionTag() + "'s balance. New balance: " + econ.getBalance(user) + " Gold.");
                 return;
             }
 

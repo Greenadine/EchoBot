@@ -74,7 +74,6 @@ public class BalanceCommand implements MessageCreateListener {
 
             else {
                 handler.reply("Invalid command usage. Type ``e!help balance`` for command information.");
-                return;
             }
         }
     }

@@ -2,7 +2,7 @@ package me.greenadine.echobot.commands.moderation;
 
 import me.greenadine.echobot.EchoBot;
 import me.greenadine.echobot.handlers.CommandHandler;
-import me.greenadine.echobot.handlers.MuteHandler;
+import me.greenadine.echobot.handlers.Muter;
 import me.greenadine.echobot.handlers.PermissionsHandler;
 import me.greenadine.echobot.handlers.TagHandler;
 import org.javacord.api.entity.permission.PermissionType;
@@ -12,7 +12,7 @@ import org.javacord.api.listener.message.MessageCreateListener;
 
 public class MuteCommand implements MessageCreateListener {
 
-    private MuteHandler mute = EchoBot.mute;
+    private Muter mute = EchoBot.mute;
 
     @Override
     public void onMessageCreate(MessageCreateEvent e) {
@@ -58,10 +58,10 @@ public class MuteCommand implements MessageCreateListener {
                     return;
                 }
 
-                long duration;
+                int duration;
 
                 try {
-                    duration = Long.valueOf(handler.getArg(1));
+                    duration = Integer.valueOf(handler.getArg(1));
                 } catch (NumberFormatException ex) {
                     handler.reply("Duration has to be a number.");
                     return;

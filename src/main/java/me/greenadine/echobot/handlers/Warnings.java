@@ -10,11 +10,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class WarningHandler {
+public class Warnings {
 
     private HashMap<Long, List<Warning>> warnings;
 
-    public WarningHandler() {
+    public Warnings() {
         warnings = load();
     }
 

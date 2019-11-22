@@ -20,8 +20,7 @@ public class Phrases {
     }
 
     public String getRandom() {
-        Random r = new Random();
-        return phrases.get(r.nextInt(phrases.size() - 1));
+        return phrases.get(new Random().nextInt(phrases.size() - 1));
     }
 
     private void setup() {

@@ -32,7 +32,7 @@ public class RankCommand implements MessageCreateListener {
 
                 EmbedBuilder embed = new EmbedBuilder()
                         .setTitle(user.getName() + "'s Rank")
-                        .addField("You are", "Level " + lvl.calculateLevel(xp) + " (" + xp + " XP).")
+                        .addField("You are currently", "Level " + lvl.calculateLevel(xp) + " (" + xp + " XP).")
                         .setFooter("Your current position in the leaderboard is #" + lvl.getTopPosition(user) + ".")
                         .setColor(Color.CYAN)
                         .setThumbnail(user.getAvatar());
@@ -66,8 +66,8 @@ public class RankCommand implements MessageCreateListener {
 
                 EmbedBuilder embed = new EmbedBuilder()
                         .setTitle(user.getName() + "'s Rank")
-                        .addField("They are", "Level " + lvl.calculateLevel(xp) + " (" + xp + " XP).")
-                        .setFooter("Their current position in the leaderboard is #" + lvl.getTopPosition(user) + ".")
+                        .addField("They are currently", "Level " + lvl.calculateLevel(xp) + " (" + xp + " XP).")
+                        .setFooter("Their current position in the leaderboard is #" + lvl.getTopPosition(tagged) + ".")
                         .setColor(Color.CYAN)
                         .setThumbnail(user.getAvatar());
 

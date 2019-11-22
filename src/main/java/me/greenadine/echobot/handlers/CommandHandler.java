@@ -6,6 +6,7 @@ import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.user.User;
 import org.javacord.api.event.message.MessageCreateEvent;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -60,6 +61,15 @@ public class CommandHandler {
      */
     public void reply(String content, EmbedBuilder embed) {
         channel.sendMessage(content, embed);
+    }
+
+    /**
+     * Reply with a message and an attached file in the channel of the message that invoked the command.
+     * @param content The message
+     * @param file The file(s)
+     */
+    public void reply(String content, File... file) {
+        channel.sendMessage(content, file);
     }
 
     /**

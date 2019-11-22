@@ -55,6 +55,11 @@ public class EconAddCommand implements MessageCreateListener {
                     return;
                 }
 
+                if (amount <= 0) {
+                    handler.reply("Please put in a number higher than 0.");
+                    return;
+                }
+
                 if (!econ.hasData(tagged)) {
                     econ.register(tagged);
                 }
