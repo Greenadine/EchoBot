@@ -34,7 +34,7 @@ public class StatusCommand implements MessageCreateListener {
             }
 
             if (handler.length() == 0) {
-                handler.reply("Please specify the user to mute and the duration in minutes.");
+                handler.reply("Please specify the user to check.");
                 return;
             }
 

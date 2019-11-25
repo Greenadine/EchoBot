@@ -34,7 +34,7 @@ public class SlotsResult {
 
     private void determineCombos() {
         // Euca & Echo: Wish and Wisher
-        if (hasSlot(SlotEntry.EUCA) && hasSlot(SlotEntry.ECHO)) {
+        if ((hasSlot(SlotEntry.EUCA) && hasSlot(SlotEntry.ECHO)) || (hasSlot(SlotEntry.JINNY) && hasSlot(SlotEntry.HALLEY))) {
             combos.add(SlotCombo.WISH_AND_WISHER);
         }
 
@@ -48,30 +48,34 @@ public class SlotsResult {
             combos.add(SlotCombo.HOMESCHOOLED);
         }
 
-        // Euca & Sissel: Flustered Bunny
+        // Euca & Sissel: Flusterbunny
         if (hasSlot(SlotEntry.EUCA) && hasSlot(SlotEntry.SISSEL)) {
-            combos.add(SlotCombo.FLUSTERED_BUNNY);
+            combos.add(SlotCombo.FLUSTERBUNNY);
+        }
+
+        if (hasSlot(SlotEntry.SISSEL) && hasSlot(SlotEntry.HERSHEL) && hasSlot(SlotEntry.CECILIA)) {
+            combos.add(SlotCombo.THE_BRADLEYS);
         }
 
         // Euca & Sissel & Hershel: There's Lube in the Drawer
         if (hasSlot(SlotEntry.EUCA) && hasSlot(SlotEntry.SISSEL) && (hasSlot(SlotEntry.HERSHEL) || hasSlot(SlotEntry.HERSHELWTF))) {
             combos.add(SlotCombo.THERES_LUBE_IN_THE_DRAWER);
 
-            combos.removeIf(combo -> combo == SlotCombo.FLUSTERED_BUNNY);
+            combos.removeIf(combo -> combo == SlotCombo.FLUSTERBUNNY || combo == SlotCombo.CAFE_DU_COEUR);
         }
 
         // Sissel & Euca & Jinny * Hershel: Tease the Bunny
         if (hasSlot(SlotEntry.SISSEL) && hasSlot(SlotEntry.EUCA) && hasSlot(SlotEntry.JINNY) && hasSlot(SlotEntry.HERSHEL)) {
             combos.add(SlotCombo.TEASE_THE_BUNNY);
 
-            combos.removeIf(combo -> combo == SlotCombo.CAFE_DU_COEUR || combo == SlotCombo.FLUSTERED_BUNNY || combo == SlotCombo.HOMESCHOOLED);
+            combos.removeIf(combo -> combo == SlotCombo.CAFE_DU_COEUR || combo == SlotCombo.FLUSTERBUNNY || combo == SlotCombo.HOMESCHOOLED);
         }
 
         // Euca & Owen & Phillip & Sissel: The Gang
         if (hasSlot(SlotEntry.EUCA) && hasSlot(SlotEntry.OWEN) && hasSlot(SlotEntry.PHILLIP) && hasSlot(SlotEntry.SISSEL)) {
             combos.add(SlotCombo.THE_GANG);
 
-            combos.removeIf(combo -> combo == SlotCombo.FLUSTERED_BUNNY);
+            combos.removeIf(combo -> combo == SlotCombo.FLUSTERBUNNY);
         }
 
         multiplier = 0;

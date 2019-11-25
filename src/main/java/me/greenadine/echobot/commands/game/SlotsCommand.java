@@ -71,7 +71,7 @@ public class SlotsCommand implements MessageCreateListener {
                     StringJoiner joiner = new StringJoiner("\n");
 
                     for (SlotCombo combo : result.getCombos()) {
-                        joiner.add(combo.getName() + " - x" + combo.getMultiplier() + " Multiplier");
+                        joiner.add(combo.getName() + " - x" + combo.getMultiplier() + "");
                     }
 
                     embed.addInlineField("Combos", joiner.toString() + "\nMultiplier: x" + result.getMultiplier());

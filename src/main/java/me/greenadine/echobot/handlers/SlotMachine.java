@@ -9,9 +9,10 @@ public class SlotMachine {
 
     /**
      * // Points list:
+     * Cecilia    - 10 points
      * Echo       - 25 points
      * Euca       - 15 points
-     * Ha
+     * Halley     - 30 points
      * Hershel    - 10 points
      * Jinny      - 30 points
      * Owen       - 20 points
@@ -20,12 +21,12 @@ public class SlotMachine {
      * HershelWtf - 50 points
      *
      * // Combo list:
-     * Echo + Euca                          = x1.5 (Wish and Wisher)
-     * Sissel + Hershel                     = x1.5 (Café Combo)
-     * Sissel + Jinny                       = x1.5 (Homeschooled)
-     * Euca + Sissel                        = x1.5 (Flustered Bunny)
-     *
-     * Euca + Sissel + Hershel/HershelWtf   = x2 (There's Lube in the Drawer)
+     * Echo + Euca / Halley + Jinny         = x2 (Wish and Wisher)
+     * Sissel + Hershel                     = x2 (Café du Coeur)
+     * Sissel + Jinny                       = x2 (Homeschooled)
+     * Euca + Sissel                        = x2 (Flusterbunny)
+     * Sissel + Hershel + Cecilia           = x2.5 (The Bradley's)
+     * Euca + Sissel + Hershel/HershelWtf   = x2.5 (There's Lube in the Drawer)
      * Sissel + Euca + Jinny + Hershel      = x3 (Tease the Bunny)
      * Euca + Owen + Phillip + Sissel       = x3 (The Gang)
      */
