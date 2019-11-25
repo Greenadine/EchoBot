@@ -25,12 +25,10 @@ public class EconSetCommand implements MessageCreateListener {
 
             if (handler.length() == 0) {
                 handler.reply("Please specify a user and the amount.");
-                return;
             }
 
             else if (handler.length() == 1) {
                 handler.reply("Please specify the amount of Gold to set the user's balance to.");
-                return;
             }
 
             else if (handler.length() == 2) {
@@ -62,12 +60,10 @@ public class EconSetCommand implements MessageCreateListener {
                 econ.set(tagged, amount);
 
                 handler.reply("Set " + tagged.getNicknameMentionTag() + "'s balance to " + econ.getBalance(tagged) + " Gold.");
-                return;
             }
 
             else {
                 handler.reply("Invalid command usage. Type ``e!help econ-set`` for command information.");
-                return;
             }
         }
     }

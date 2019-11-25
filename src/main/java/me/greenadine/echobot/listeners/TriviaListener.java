@@ -27,7 +27,7 @@ public class TriviaListener implements MessageCreateListener {
 
                 if (question.isCorrectAnswer(answer)) {
                     int reward = randomReward();
-                    boolean success = econ.add(user, reward); // Award player up to 5 Gold for getting the correct answer.
+                    boolean success = econ.add(user, reward); // Award player 2 to 5 Gold for getting the correct answer.
 
                     handler.reply("Correct! You've been awarded " + reward + " Gold!");
                 } else {
@@ -43,8 +43,8 @@ public class TriviaListener implements MessageCreateListener {
         Random random = new Random();
         int reward = random.nextInt(5);
 
-        if (reward < 1) {
-            reward = 1;
+        if (reward < 2) {
+            reward = 2;
         }
 
         return reward;

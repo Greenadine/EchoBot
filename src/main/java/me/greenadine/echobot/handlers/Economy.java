@@ -35,7 +35,7 @@ public class Economy {
      * @param user The user
      * @return int
      */
-    public Integer getBalance(User user) {
+    public int getBalance(User user) {
         if (hasData(user)) {
             return econ.get(user.getId());
         } else {

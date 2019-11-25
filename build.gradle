@@ -13,5 +13,5 @@ repositories {
 
 dependencies {
     implementation 'org.javacord:javacord:3.0.4'
-    compile group: 'org.yaml', name: 'snakeyaml', version: '1.25'
+    compile group: 'joda-time', name: 'joda-time', version: '2.3'
 }
