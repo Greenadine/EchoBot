@@ -33,7 +33,7 @@ public enum SlotEntry {
     public static SlotEntry getRandom() {
         Random r = new Random();
 
-        switch(r.nextInt(7)) {
+        switch(r.nextInt(8)) {
             case 0:
                 return ECHO;
             case 1:

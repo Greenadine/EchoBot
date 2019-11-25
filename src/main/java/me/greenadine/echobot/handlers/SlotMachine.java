@@ -11,6 +11,7 @@ public class SlotMachine {
      * // Points list:
      * Echo       - 25 points
      * Euca       - 15 points
+     * Ha
      * Hershel    - 10 points
      * Jinny      - 30 points
      * Owen       - 20 points
@@ -29,7 +30,7 @@ public class SlotMachine {
      * Euca + Owen + Phillip + Sissel       = x3 (The Gang)
      */
 
-    public SlotsResult roll() {
+    public SlotsResult roll(int bet) {
         SlotEntry slot1 = SlotEntry.getRandom();
         SlotEntry slot2 = SlotEntry.getRandom();
         SlotEntry slot3 = SlotEntry.getRandom();
@@ -48,6 +49,6 @@ public class SlotMachine {
             points += occurrences * entry.getPoints();
         }
 
-        return new SlotsResult(slot1, slot2, slot3, slot4, points);
+        return new SlotsResult(slot1, slot2, slot3, slot4, points, bet);
     }
 }

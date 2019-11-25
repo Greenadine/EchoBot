@@ -2,7 +2,6 @@ package me.greenadine.echobot.objects;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringJoiner;
 
 public class SlotsResult {
 
@@ -19,7 +18,7 @@ public class SlotsResult {
 
     private List<SlotCombo> combos;
 
-    public SlotsResult(SlotEntry s1, SlotEntry s2, SlotEntry s3, SlotEntry s4, int p) {
+    public SlotsResult(SlotEntry s1, SlotEntry s2, SlotEntry s3, SlotEntry s4, int p, int b) {
         slot1 = s1;
         slot2 = s2;
         slot3 = s3;
@@ -27,6 +26,7 @@ public class SlotsResult {
 
         slotPoints = p;
         points = p;
+        bet = b;
 
         combos = new ArrayList<>();
         determineCombos();
@@ -92,7 +92,7 @@ public class SlotsResult {
      * @return int
      */
     public int getReward() {
-        return (int) (points * (bet / 10) * multiplier);
+        return (int) (points / 12 * (bet / 10) * multiplier);
     }
 
     /**

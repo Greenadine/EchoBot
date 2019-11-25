@@ -47,7 +47,7 @@ public class SlotsCommand implements MessageCreateListener {
 
                 econ.withdraw(user, bet);
 
-                SlotsResult result = slots.roll();
+                SlotsResult result = slots.roll(bet);
 
                 EmbedBuilder embed = new EmbedBuilder()
                         .setTitle("Slotmachine")
