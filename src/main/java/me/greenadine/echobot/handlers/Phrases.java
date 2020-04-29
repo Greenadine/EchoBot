@@ -1,5 +1,7 @@
 package me.greenadine.echobot.handlers;
 
+import org.javacord.api.entity.user.User;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -19,8 +21,29 @@ public class Phrases {
         setup();
     }
 
-    public String getRandom() {
-        return phrases.get(new Random().nextInt(phrases.size() - 1));
+    /**
+     * Get the amount of loaded-in phrases.
+     * @return int
+     */
+    public int getSize() {
+        return phrases.size();
+    }
+
+    /**
+     * Returns whether the list of phrases is empty or not.
+     * @return boolean
+     */
+    public boolean isEmpty() {
+        return phrases.isEmpty();
+    }
+
+    /**
+     * Get a random phrase.
+     * @param user The user that executed the command.
+     * @return String
+     */
+    public String getRandom(User user) {
+        return phrases.get(new Random().nextInt(phrases.size())).replaceAll("%user%", user.getNicknameMentionTag());
     }
 
     private void setup() {
@@ -32,6 +55,8 @@ public class Phrases {
             while (scanner.hasNext()) {
                 list.add(scanner.nextLine());
             }
+
+            scanner.close();
         } catch (FileNotFoundException e){
             System.out.println("Failed to load file with path '" + file + "': file not found.");
             return;

@@ -1,5 +1,7 @@
 package me.greenadine.echobot.handlers;
 
+import me.greenadine.echobot.util.StringUtils;
+
 import org.javacord.api.entity.channel.Channel;
 import org.javacord.api.entity.channel.TextChannel;
 import org.javacord.api.entity.message.Message;
@@ -11,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 public class MessageHandler {
 
@@ -45,10 +48,74 @@ public class MessageHandler {
     }
 
     /**
+     * Returns whether the message is equal to the given string.
+     * @param s The string
+     * @return boolean
+     */
+    public boolean equals(String s) {
+        return getMessage().equals(s);
+    }
+
+    /**
+     * Returns whether the message is equal to the given string while ignoring case.
+     * @param s The string
+     * @return boolean
+     */
+    public boolean equalsIgnoreCase(String s) {
+        return getMessage().equalsIgnoreCase(s);
+    }
+
+    /**
+     * Returns whether the message contains the given string.
+     * @param s The string
+     * @return boolean
+     */
+    public boolean contains(String s) {
+        return getMessage().contains(s);
+    }
+
+    /**
+     * Returns whether the message contains the given string while ignoring case.
+     * @param s The string
+     * @return boolean
+     */
+    public boolean containsIgnoreCase(String s) {
+        return StringUtils.containsIgnoreCase(getMessage(), s);
+    }
+
+    /**
+     * Returns whether the message contains the given string, ignoring the order and case.
+     * @param s The string
+     * @return boolean
+     */
+    public boolean containsSegment(String s) {
+        String[] str = s.split(" ");
+
+        for (int i = 0; i < str.length; i++) {
+            String s1 = str[i];
+
+            if (!containsIgnoreCase(s1)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Returns whether the message starts with the given string.
+     * @param s The string
+     * @return boolean
+     */
+    public boolean startsWith(String s) {
+        return message.getContent().startsWith(s);
+    }
+
+    /**
      * Get the instance of the message.
      * @return Message
      */
-    public Message getMessageInstance() {
+    public Message getInstance() {
         return message;
     }
 
@@ -62,18 +129,26 @@ public class MessageHandler {
 
     /**
      * Reply with a message in the channel of the message.
-     * @param content
+     * @param content The message
      */
-    public void reply(String content) {
-        channel.sendMessage(content);
+    public CompletableFuture<Message> reply(String content) {
+        return channel.sendMessage(content);
     }
 
     /**
      * Reply with an embed in the channel of the message that invoked the command.
-     * @param embed
+     * @param embed The embed
      */
-    public void reply(EmbedBuilder embed) {
-        channel.sendMessage(embed);
+    public CompletableFuture<Message> reply(EmbedBuilder embed) {
+        return channel.sendMessage(embed);
+    }
+
+    /**
+     * Get the Optional of the User.
+     * @return Optional<User>
+     */
+    public Optional<User> getOptionalUser() {
+        return user;
     }
 
     /**

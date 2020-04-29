@@ -1,96 +1,130 @@
 package me.greenadine.echobot.commands.moderation;
 
 import me.greenadine.echobot.EchoBot;
-import me.greenadine.echobot.handlers.CommandHandler;
-import me.greenadine.echobot.handlers.Muter;
+import me.greenadine.echobot.commands.EchobotCommand;
+import me.greenadine.echobot.commands.CommandHandler;
+import me.greenadine.echobot.handlers.mute.MuteHandler;
 import me.greenadine.echobot.handlers.PermissionsHandler;
-import me.greenadine.echobot.handlers.TagHandler;
-import org.javacord.api.entity.permission.PermissionType;
+import me.greenadine.echobot.util.TagUtils;
 import org.javacord.api.entity.user.User;
 import org.javacord.api.event.message.MessageCreateEvent;
-import org.javacord.api.listener.message.MessageCreateListener;
 
-public class MuteCommand implements MessageCreateListener {
+import java.util.Optional;
 
-    private Muter mute = EchoBot.mute;
+public class MuteCommand implements EchobotCommand {
+
+    // Command info
+    public String getName() {
+        return "mute";
+    }
+
+    public String getDescription() {
+        return "Mute a user, preventing them from sending messages in all channels and from joining voice channels for the duration.";
+    }
+
+    public String getDetails() { return null; }
+
+    public String getUsage() {
+        return "e!mute <user> <duration>";
+    }
+
+    public String getArguments() {
+        return "``user`` - The user. Either tag them, or give their ID.\n``duration`` - The amount of time in minutes to mute the user for.";
+    }
+
+    public String getAliases() { return null; }
+
+    private MuteHandler mute = EchoBot.mute;
 
     @Override
     public void onMessageCreate(MessageCreateEvent e) {
-        CommandHandler handler = new CommandHandler(e);
+        CommandHandler handler = new CommandHandler(this, e);
 
-        if (handler.isCommand("mute")) {
-            User user = handler.getUser();
+        if (!handler.isCommand()) { return; }
 
-            if (user == null | user.isBot()) {
+        if (handler.getUser().isPresent()) {
+            User user = handler.getUser().get();
+
+            if (user.isBot()) {
                 return;
             }
 
-            if (!PermissionsHandler.hasPermission(user, e.getServer().get(), PermissionType.KICK_MEMBERS)) {
-                handler.reply("You do not have permission to mute users.");
+            if (!PermissionsHandler.isAssistant(user)) {
+                handler.reply(user.getNicknameMentionTag() + " Nice try buddy, you do not have permission to use this command.");
                 return;
             }
 
             if (handler.length() == 0) {
                 handler.reply("Please specify the user to mute and the duration in minutes.");
-                return;
             }
 
             else if (handler.length() == 1) {
                 handler.reply("Please give duration in minutes to mute the user for.");
-                return;
             }
 
             else if (handler.length() == 2) {
-                if (!TagHandler.isTag(handler.getArg(0))) {
-                    handler.reply( "Please tag a user like this: " + EchoBot.bot.getYourself().getNicknameMentionTag() + ".");
-                    return;
-                }
+                Optional<User> optTarget ;
 
-                User tagged = TagHandler.getUser(handler.getArg(0));
+                if (!TagUtils.isUserMentionTag(handler.getArg(0))) {
+                    long id;
 
-                if (tagged.isBot()) {
-                    handler.reply("That user is a bot.");
-                    return;
-                }
+                    try {
+                        id = Long.valueOf(handler.getArg(0));
+                    } catch (NumberFormatException ex) {
+                        handler.reply("Please give either a user's ID or tag a user like this: " + EchoBot.bot.getYourself().getNicknameMentionTag() + ".");
+                        return;
+                    }
 
-                if (mute.isMuted(tagged)) {
-                    handler.reply("This user is already muted. Mute remainder: " + mute.getFormattedMuteDuration(user) + ".");
-                    return;
-                }
-
-                int duration;
-
-                try {
-                    duration = Integer.valueOf(handler.getArg(1));
-                } catch (NumberFormatException ex) {
-                    handler.reply("Duration has to be a number.");
-                    return;
-                }
-
-                if (duration < 1) {
-                    handler.reply("Duration has to be at least 1 minute.");
-                    return;
-                }
-
-                if (duration > 1440) {
-                    handler.reply("Can not mute a user for longer than a day (1440 minutes).");
-                    return;
-                }
-
-                boolean success = mute.mute(tagged, duration);
-
-                if (success) {
-                    handler.reply("User " + tagged.getName() + " muted for " + duration + " minutes.");
-                    return;
+                    optTarget = EchoBot.bot.getCachedUserById(id);
                 } else {
-                    handler.reply("An internal error has occurred while trying to mute user.");
-                    return;
+                    optTarget = TagUtils.getUser(handler.getArg(0));
                 }
+
+                optTarget.ifPresent(target -> {
+                    if (target.isBot()) {
+                        handler.reply("That user is a bot.");
+                        return;
+                    }
+
+                    if (mute.isMuted(target)) {
+                        handler.reply("This user is already muted. Mute remainder: " + mute.getFormattedMuteDuration(user) + ".");
+                        return;
+                    }
+
+                    int duration;
+
+                    try {
+                        duration = Integer.valueOf(handler.getArg(1));
+                    } catch (NumberFormatException ex) {
+                        handler.reply("Duration has to be a number.");
+                        return;
+                    }
+
+                    if (duration < 1) {
+                        handler.reply("Duration has to be at least 1 minute.");
+                        return;
+                    }
+
+                    if (duration > 1440) {
+                        handler.reply("Can not mute a user for longer than a day (1440 minutes).");
+                        return;
+                    }
+
+                    boolean success = mute.mute(target, duration);
+
+                    if (success) {
+                        handler.reply("User " + target.getName() + " muted for " + duration + " minutes.");
+                    } else {
+                        handler.reply("An internal error has occurred while trying to mute user.");
+                    }
+                });
             }
 
             else {
                 handler.reply(user.getNicknameMentionTag() + " Invalid command usage. Type ``e!help mute`` for command information.");
             }
+        } else {
+            handler.reply("Failed to execute command. Reason: User empty.");
         }
     }
 }

@@ -194,7 +194,7 @@ public class Levels {
      */
     private void save() {
         try {
-            FileOutputStream fileOut = new FileOutputStream("C:\\Users\\kevin\\IdeaProjects\\EchoBot\\src\\main\\java\\me\\greenadine\\echobot\\data\\levels.ser");
+            FileOutputStream fileOut = new FileOutputStream("data/levels.ser");
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
 
             out.writeObject(lvl);
@@ -214,7 +214,7 @@ public class Levels {
         HashMap<Long, Integer> map;
 
         try {
-            FileInputStream fileIn = new FileInputStream("C:\\Users\\kevin\\IdeaProjects\\EchoBot\\src\\main\\java\\me\\greenadine\\echobot\\data\\levels.ser");
+            FileInputStream fileIn = new FileInputStream("data/levels.ser");
             ObjectInputStream in = new ObjectInputStream(fileIn);
             map = (HashMap) in.readObject();
         } catch (EOFException e) {

@@ -29,6 +29,7 @@ public class Notifier {
     public boolean addToRepeat(User user) {
         if (!isInRepeat(user)) {
             repeat.add(user.getId());
+            saveRepeatList();
             return true;
         } else {
             return false;
@@ -43,6 +44,7 @@ public class Notifier {
     public boolean removeFromRepeat(User user) {
         if (isInRepeat(user)) {
             repeat.remove(user.getId());
+            saveRepeatList();
             return true;
         } else {
             return false;
@@ -73,6 +75,7 @@ public class Notifier {
     public boolean addToRepeatPatron(User user) {
         if (!isInRepeatPatron(user)) {
             repeat_patron.add(user.getId());
+            saveRepeatPatronList();
             return true;
         } else {
             return false;
@@ -87,6 +90,7 @@ public class Notifier {
     public boolean removeFromRepeatPatron(User user) {
         if (isInRepeatPatron(user)) {
             repeat_patron.remove(user.getId());
+            saveRepeatPatronList();
             return true;
         } else {
             return false;
@@ -117,6 +121,7 @@ public class Notifier {
     public boolean addToPatreon(User user) {
         if (!isInPatreon(user)) {
             patreon.add(user.getId());
+            savePatreonList();
             return true;
         } else {
             return false;
@@ -131,6 +136,7 @@ public class Notifier {
     public boolean removeFromPatreon(User user) {
         if (isInPatreon(user)) {
             patreon.remove(user.getId());
+            savePatreonList();
             return true;
         } else {
             return false;
@@ -188,14 +194,14 @@ public class Notifier {
      */
     private void saveRepeatList() {
         try {
-            FileOutputStream fileOut = new FileOutputStream("C:\\Users\\kevin\\IdeaProjects\\EchoBot\\src\\main\\java\\me\\greenadine\\echobot\\data\\notifier_repeat.ser");
+            FileOutputStream fileOut = new FileOutputStream("data/notifier/repeat.ser");
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
 
             out.writeObject(repeat);
             out.close();
             fileOut.close();
         } catch (IOException e) {
-            System.out.println("Failed to save data to file 'notifier_repeat.ser'. Reason: IOException.");
+            System.out.println("Failed to save data to file 'notifier/repeat.ser'. Reason: IOException.");
             e.printStackTrace();
         }
     }
@@ -205,14 +211,14 @@ public class Notifier {
      */
     private void saveRepeatPatronList() {
         try {
-            FileOutputStream fileOut = new FileOutputStream("C:\\Users\\kevin\\IdeaProjects\\EchoBot\\src\\main\\java\\me\\greenadine\\echobot\\data\\notifier_repeat_patron.ser");
+            FileOutputStream fileOut = new FileOutputStream("data/notifier/repeat_patron.ser");
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
 
             out.writeObject(repeat_patron);
             out.close();
             fileOut.close();
         } catch (IOException e) {
-            System.out.println("Failed to save data to file 'notifier_repeat_patron.ser'. Reason: IOException.");
+            System.out.println("Failed to save data to file 'notifier/repeat_patron.ser'. Reason: IOException.");
             e.printStackTrace();
         }
     }
@@ -222,14 +228,14 @@ public class Notifier {
      */
     private void savePatreonList() {
         try {
-            FileOutputStream fileOut = new FileOutputStream("C:\\Users\\kevin\\IdeaProjects\\EchoBot\\src\\main\\java\\me\\greenadine\\echobot\\data\\notifier_patreon.ser");
+            FileOutputStream fileOut = new FileOutputStream("data/notifier/patreon.ser");
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
 
             out.writeObject(patreon);
             out.close();
             fileOut.close();
         } catch (IOException e) {
-            System.out.println("Failed to save data to file 'notifier_patreon.ser'. Reason: IOException.");
+            System.out.println("Failed to save data to file 'notifier/patreon.ser'. Reason: IOException.");
             e.printStackTrace();
         }
     }
@@ -242,18 +248,18 @@ public class Notifier {
         List<Long> list;
 
         try {
-            FileInputStream fileIn = new FileInputStream("C:\\Users\\kevin\\IdeaProjects\\EchoBot\\src\\main\\java\\me\\greenadine\\echobot\\data\\notifier_repeat.ser");
+            FileInputStream fileIn = new FileInputStream("data/notifier/repeat.ser");
             ObjectInputStream in = new ObjectInputStream(fileIn);
             list = (List) in.readObject();
         } catch (EOFException e) {
-            System.out.println("Nothing found in file 'notifier_repeat.ser'.");
+            System.out.println("Nothing found in file 'notifier/repeat.ser'.");
             list = new ArrayList<>();
         } catch (IOException e) {
-            System.out.println("Failed to load data from file 'notifier_repeat.ser'. Reason: IOException.");
+            System.out.println("Failed to load data from file 'notifier/repeat.ser'. Reason: IOException.");
             e.printStackTrace();
             list = new ArrayList<>();
         } catch (ClassNotFoundException e) {
-            System.out.println("Failed to load data from file 'notifier_repeat.ser'. Reason: Class not found.");
+            System.out.println("Failed to load data from file 'notifier/repeat.ser'. Reason: Class not found.");
             e.printStackTrace();
             list = new ArrayList<>();
         }
@@ -269,18 +275,18 @@ public class Notifier {
         List<Long> list;
 
         try {
-            FileInputStream fileIn = new FileInputStream("C:\\Users\\kevin\\IdeaProjects\\EchoBot\\src\\main\\java\\me\\greenadine\\echobot\\data\\notifier_repeat_patron.ser");
+            FileInputStream fileIn = new FileInputStream("data/notifier/repeat_patron.ser");
             ObjectInputStream in = new ObjectInputStream(fileIn);
             list = (List) in.readObject();
         } catch (EOFException e) {
-            System.out.println("Nothing found in file 'notifier_repeat_patron.ser'.");
+            System.out.println("Nothing found in file 'notifier/repeat_patron.ser'.");
             list = new ArrayList<>();
         } catch (IOException e) {
-            System.out.println("Failed to load data from file 'notifier_repeat_patron.ser'. Reason: IOException.");
+            System.out.println("Failed to load data from file 'notifier/repeat_patron.ser'. Reason: IOException.");
             e.printStackTrace();
             list = new ArrayList<>();
         } catch (ClassNotFoundException e) {
-            System.out.println("Failed to load data from file 'notifier_repeat_patron.ser'. Reason: Class not found.");
+            System.out.println("Failed to load data from file 'notifier/repeat_patron.ser'. Reason: Class not found.");
             e.printStackTrace();
             list = new ArrayList<>();
         }
@@ -296,23 +302,22 @@ public class Notifier {
         List<Long> list;
 
         try {
-            FileInputStream fileIn = new FileInputStream("C:\\Users\\kevin\\IdeaProjects\\EchoBot\\src\\main\\java\\me\\greenadine\\echobot\\data\\notifier_patreon.ser");
+            FileInputStream fileIn = new FileInputStream("data/notifier/patreon.ser");
             ObjectInputStream in = new ObjectInputStream(fileIn);
             list = (List) in.readObject();
         } catch (EOFException e) {
-            System.out.println("Nothing found in file 'notifier_patreon.ser'.");
+            System.out.println("Nothing found in file 'notifier/patreon.ser'.");
             list = new ArrayList<>();
         } catch (IOException e) {
-            System.out.println("Failed to load data from file 'notifier_patreon.ser'. Reason: IOException.");
+            System.out.println("Failed to load data from file 'notifier/patreon.ser'. Reason: IOException.");
             e.printStackTrace();
             list = new ArrayList<>();
         } catch (ClassNotFoundException e) {
-            System.out.println("Failed to load data from file 'notifier_patreon.ser'. Reason: Class not found.");
+            System.out.println("Failed to load data from file 'notifier/patreon.ser'. Reason: Class not found.");
             e.printStackTrace();
             list = new ArrayList<>();
         }
 
         return list;
     }
-
 }

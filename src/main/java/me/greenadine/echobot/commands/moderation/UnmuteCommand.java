@@ -1,71 +1,111 @@
 package me.greenadine.echobot.commands.moderation;
 
 import me.greenadine.echobot.EchoBot;
-import me.greenadine.echobot.handlers.CommandHandler;
-import me.greenadine.echobot.handlers.Muter;
+import me.greenadine.echobot.commands.EchobotCommand;
+import me.greenadine.echobot.commands.CommandHandler;
+import me.greenadine.echobot.handlers.mute.MuteHandler;
 import me.greenadine.echobot.handlers.PermissionsHandler;
-import me.greenadine.echobot.handlers.TagHandler;
-import org.javacord.api.entity.permission.PermissionType;
+import me.greenadine.echobot.util.TagUtils;
 import org.javacord.api.entity.user.User;
 import org.javacord.api.event.message.MessageCreateEvent;
-import org.javacord.api.listener.message.MessageCreateListener;
 
-public class UnmuteCommand implements MessageCreateListener {
+import java.util.Optional;
 
-    private Muter mute = EchoBot.mute;
+public class UnmuteCommand implements EchobotCommand {
+
+    // Command info
+    public String getName() {
+        return "unmute";
+    }
+
+    public String getDescription() {
+        return "Unmute a currently muted user..";
+    }
+
+    public String getDetails() { return null; }
+
+    public String getUsage() {
+        return "e!unmute <user>";
+    }
+
+    public String getArguments() {
+        return "``user`` - The user. Either tag them, or give their ID.";
+    }
+
+    public String getAliases() { return null; }
+
+    private MuteHandler mute = EchoBot.mute;
 
     @Override
     public void onMessageCreate(MessageCreateEvent e) {
-        CommandHandler handler = new CommandHandler(e);
+        CommandHandler handler = new CommandHandler(this, e);
 
-        if (handler.isCommand("unmute")) {
-            User user = handler.getUser();
+        if (!handler.isCommand()) { return; }
 
-            if (user == null | user.isBot()) {
+        if (handler.getUser().isPresent()) {
+            User user = handler.getUser().get();
+
+            if (user.isBot()) {
                 return;
             }
 
-            if (!PermissionsHandler.hasPermission(user, e.getServer().get(), PermissionType.KICK_MEMBERS)) {
-                handler.reply("You do not have permission to un-mute users.");
+            if (!PermissionsHandler.isAssistant(user)) {
+                handler.reply(user.getNicknameMentionTag() + " Nice try buddy, you do not have permission to use this command.");
                 return;
             }
 
             if (handler.length() == 0) {
                 handler.reply("Please specify a user to un-mute.");
-                return;
             }
 
             else if (handler.length() == 1) {
-                if (!TagHandler.isTag(handler.getArg(0))) {
-                    handler.reply( "Please tag a user like this: " + EchoBot.bot.getYourself().getNicknameMentionTag() + ".");
-                    return;
-                }
+                Optional<User> optTarget;
 
-                User tagged = TagHandler.getUser(handler.getArg(0));
+                if (!TagUtils.isUserMentionTag(handler.getArg(0))) {
+                    long id;
 
-                if (tagged.isBot()) {
-                    handler.reply("That user is a bot.");
-                    return;
-                }
+                    try {
+                        id = Long.valueOf(handler.getArg(0));
+                    } catch (NumberFormatException ex) {
+                        handler.reply("Please either give a user's ID or tag a user like this: " + EchoBot.bot.getYourself().getNicknameMentionTag() + ".");
+                        return;
+                    }
 
-                if (!mute.isMuted(tagged)) {
-                    handler.reply("That user is not muted.");
-                    return;
-                }
-
-                boolean success = mute.unmute(tagged);
-
-                if (success) {
-                    handler.reply("User un-muted.");
-                    return;
+                    optTarget = EchoBot.bot.getCachedUserById(id);
                 } else {
-                    handler.reply("An internal error has occurred while trying to un-mute user.");
+                    optTarget = TagUtils.getUser(handler.getArg(0));
+                }
+
+                if (optTarget.isPresent()) {
+                    User target = optTarget.get();
+
+                    if (target.isBot()) {
+                        handler.reply("That user is a bot.");
+                        return;
+                    }
+
+                    if (!mute.isMuted(target)) {
+                        handler.reply("That user is not muted.");
+                        return;
+                    }
+
+                    boolean success = mute.unmute(target);
+
+                    if (success) {
+                        handler.reply("User un-muted.");
+                    } else {
+                        handler.reply("An internal error has occurred while trying to un-mute user.");
+                    }
+                } else {
+                    handler.reply("Failed to execute command. Reason: Target empty.");
                 }
             }
 
             else {
                 handler.reply(user.getNicknameMentionTag() + " Invalid command usage. Type ``e!help unmute`` for command information.");
             }
+        } else {
+            handler.reply("Failed to execute command. Reason: User empty.");
         }
     }
 }

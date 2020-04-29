@@ -3,7 +3,7 @@ package me.greenadine.echobot.listeners;
 import me.greenadine.echobot.EchoBot;
 import me.greenadine.echobot.handlers.Economy;
 import me.greenadine.echobot.handlers.MessageHandler;
-import me.greenadine.echobot.objects.TriviaQuestion;
+import me.greenadine.echobot.handlers.trivia.TriviaQuestion;
 import org.javacord.api.event.message.MessageCreateEvent;
 import org.javacord.api.listener.message.MessageCreateListener;
 
@@ -29,7 +29,13 @@ public class TriviaListener implements MessageCreateListener {
                     int reward = randomReward();
                     boolean success = econ.add(user, reward); // Award player 2 to 5 Gold for getting the correct answer.
 
-                    handler.reply("Correct! You've been awarded " + reward + " Gold!");
+                    if (success) {
+                        handler.reply("Correct! You've been awarded " + reward + " Gold!");
+                    } else {
+                        handler.reply("Failed to give reward to user " + user.getDiscriminatedName());
+                    }
+
+
                 } else {
                     handler.reply("Incorrect answer. The correct answer was: " + question.getCorrectAnswer() + ".");
                 }

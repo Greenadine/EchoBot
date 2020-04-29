@@ -1,23 +1,42 @@
 package me.greenadine.echobot.commands.general;
 
-import me.greenadine.echobot.EchoBot;
-import org.javacord.api.entity.message.Message;
+import me.greenadine.echobot.commands.EchobotCommand;
+import me.greenadine.echobot.commands.CommandHandler;
+import org.javacord.api.entity.server.Server;
 import org.javacord.api.event.message.MessageCreateEvent;
-import org.javacord.api.listener.message.MessageCreateListener;
+public class PingCommand implements EchobotCommand {
 
-public class PingCommand implements MessageCreateListener {
+    // Command info
+    public String getName() {
+        return "ping";
+    }
 
-    private String prefix = EchoBot.prefix;
+    public String getDescription() {
+        return "Check latency.";
+    }
+
+    public String getDetails() { return null; }
+
+    public String getUsage() {
+        return "e!ping";
+    }
+
+    public String getArguments() {
+        return null;
+    }
+
+    public String getAliases() { return null; }
 
     @Override
     public void onMessageCreate(MessageCreateEvent e) {
-        Message message = e.getMessage();
-        String[] args = message.getContent().split("\\s+");
+        CommandHandler handler = new CommandHandler(this, e);
 
-        if (args[0].equalsIgnoreCase(prefix + "ping")) {
-            long start = System.currentTimeMillis();
-            Message test = message.getChannel().sendMessage("Testing latency...").join();
-            test.edit("My latency is " + (System.currentTimeMillis() - start) + "ms.");
-        }
+        if (!handler.isCommand()) { return; }
+
+        long start = System.currentTimeMillis();
+
+        e.getChannel().sendMessage("Testing latency...").thenAcceptAsync(message -> {
+            message.edit("My latency is " + (System.currentTimeMillis() - start) + "ms");
+        });
     }
 }

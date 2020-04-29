@@ -1,6 +1,0 @@
-%mention% Are you feeling OK?
-%mention% Did you hit your head or something?
-%mention% I'll spare you this time, since it looks like you are retarded.
-%mention% Nah, you don't need roasting. Clearly, you being yourself is good enough.
-%mention% Ummm... Okay?
-%mention% You're an odd one.

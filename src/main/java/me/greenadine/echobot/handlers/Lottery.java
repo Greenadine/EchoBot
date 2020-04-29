@@ -116,7 +116,7 @@ public class Lottery {
      */
     private void save() {
         try {
-            FileOutputStream fileOut = new FileOutputStream("C:\\Users\\kevin\\IdeaProjects\\EchoBot\\src\\main\\java\\me\\greenadine\\echobot\\data\\lottery.ser");
+            FileOutputStream fileOut = new FileOutputStream("data/lottery.ser");
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
 
             out.writeObject(lottery);
@@ -136,7 +136,7 @@ public class Lottery {
         List<Long> map;
 
         try {
-            FileInputStream fileIn = new FileInputStream("C:\\Users\\kevin\\IdeaProjects\\EchoBot\\src\\main\\java\\me\\greenadine\\echobot\\data\\lottery.ser");
+            FileInputStream fileIn = new FileInputStream("data/lottery.ser");
             ObjectInputStream in = new ObjectInputStream(fileIn);
             map = (List) in.readObject();
         } catch (EOFException e) {

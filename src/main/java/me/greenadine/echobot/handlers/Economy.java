@@ -1,5 +1,6 @@
 package me.greenadine.echobot.handlers;
 
+import me.greenadine.echobot.EchoBot;
 import org.javacord.api.entity.user.User;
 
 import java.io.*;
@@ -44,6 +45,19 @@ public class Economy {
     }
 
     /**
+     * Returns the Gold balance of a user, formatted with thousands separator.
+     * @param user The user
+     * @return String
+     */
+    public String getFormattedBalance(User user) {
+        if (hasData(user)) {
+            return String.format("%,d", econ.get(user.getId()));
+        } else {
+            return "null";
+        }
+    }
+
+    /**
      * Returns whether a user has a certain amount of Gold or more.
      * @param user The user
      * @param amount The minimum balance to check for
@@ -65,6 +79,10 @@ public class Economy {
      */
     public boolean set(User user, int amount) {
         if (hasData(user)) {
+            if (amount > EchoBot.settings.getEconomyGoldLimit()) {
+                amount = EchoBot.settings.getEconomyGoldLimit();
+            }
+
             econ.put(user.getId(), amount);
             reload();
             return true;
@@ -84,6 +102,10 @@ public class Economy {
         if (hasData(user)) {
             econ.put(user.getId(), econ.get(user.getId()) + amount);
             reload();
+
+            if (getBalance(user) > EchoBot.settings.getEconomyGoldLimit()) {
+                set(user, EchoBot.settings.getEconomyGoldLimit());
+            }
             return true;
         } else {
             return false;
@@ -121,6 +143,14 @@ public class Economy {
         }
     }
 
+    public void clearAll() {
+        for (Long id : econ.keySet()) {
+            econ.put(id, 0);
+        }
+
+        reload();
+    }
+
     /**
      * Returns at what position the user is in the Gold leaderboard.
      * @param user The user
@@ -134,10 +164,7 @@ public class Economy {
                 .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
                 .forEachOrdered(x -> sorted.put(x.getKey(), x.getValue()));
 
-
-        int pos = new ArrayList<Long>(sorted.keySet()).indexOf(user.getId()) + 1;
-
-        return pos;
+        return new ArrayList<>(sorted.keySet()).indexOf(user.getId()) + 1;
     }
 
     /**
@@ -177,7 +204,7 @@ public class Economy {
             }
         }
 
-        List<Entry<K, V>> result = new ArrayList<Map.Entry<K,V>>();
+        List<Entry<K, V>> result = new ArrayList<>();
 
         while (highest.size() > 0) {
             result.add(highest.poll());
@@ -202,7 +229,7 @@ public class Economy {
      */
     private void save() {
         try {
-            FileOutputStream fileOut = new FileOutputStream("C:\\Users\\kevin\\IdeaProjects\\EchoBot\\src\\main\\java\\me\\greenadine\\echobot\\data\\econ.ser");
+            FileOutputStream fileOut = new FileOutputStream("data/econ.ser");
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
 
             out.writeObject(econ);
@@ -222,7 +249,7 @@ public class Economy {
         HashMap<Long, Integer> map;
 
         try {
-            FileInputStream fileIn = new FileInputStream("C:\\Users\\kevin\\IdeaProjects\\EchoBot\\src\\main\\java\\me\\greenadine\\echobot\\data\\econ.ser");
+            FileInputStream fileIn = new FileInputStream("data/econ.ser");
             ObjectInputStream in = new ObjectInputStream(fileIn);
             map = (HashMap) in.readObject();
         } catch (EOFException e) {

@@ -1,31 +1,61 @@
 package me.greenadine.echobot.commands.game;
 
-import me.greenadine.echobot.handlers.CommandHandler;
+import me.greenadine.echobot.commands.EchobotCommand;
+import me.greenadine.echobot.commands.CommandHandler;
+import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.event.message.MessageCreateEvent;
-import org.javacord.api.listener.message.MessageCreateListener;
 
+import java.awt.*;
 import java.io.File;
 import java.util.Random;
 
-public class CoinflipCommand implements MessageCreateListener {
+public class CoinflipCommand implements EchobotCommand {
+
+    // Command info
+    public String getName() {
+        return "coinflip";
+    }
+
+    public String getDescription() {
+        return "Flip a coin.";
+    }
+
+    public String getDetails() { return null; }
+
+    public String getUsage() {
+        return "e!coinflip";
+    }
+
+    public String getArguments() {
+        return null;
+    }
+
+    public String getAliases() { return null; }
 
     @Override
     public void onMessageCreate(MessageCreateEvent e) {
-        CommandHandler handler = new CommandHandler(e);
+        CommandHandler handler = new CommandHandler(this, e);
 
-        if (handler.isCommand("coinflip")) {
-            if (handler.length() != 0) {
-                handler.reply("Invalid command usage. Type ``e!help coinflip`` for command information.");
-                return;
-            }
+        if (!handler.isCommand()) { return; }
 
-            boolean side = new Random().nextBoolean();
-
-            if (side) {
-                handler.reply("Heads.", new File("C:/Users/kevin/IdeaProjects/EchoBot/src/main/java/me/greenadine/echobot/assets/images/head.png"));
-            } else {
-                handler.reply("Tails.", new File("C:/Users/kevin/IdeaProjects/EchoBot/src/main/java/me/greenadine/echobot/assets/images/tail.png"));
-            }
+        if (handler.length() != 0) {
+            handler.reply("Invalid command usage. Type ``e!help coinflip`` for command information.");
+            return;
         }
+
+        boolean side = new Random().nextBoolean();
+
+        EmbedBuilder embed = new EmbedBuilder()
+                .setColor(Color.cyan);
+
+        if (side) {
+            embed.setTitle("Heads");
+            embed.setImage(new File("assets/images/head.png"));
+        } else {
+            embed.setTitle("Tails");
+            embed.setImage(new File("assets/images/tail.png"));
+        }
+
+        handler.reply(embed);
     }
 }

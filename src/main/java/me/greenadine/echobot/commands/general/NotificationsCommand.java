@@ -1,27 +1,57 @@
 package me.greenadine.echobot.commands.general;
 
 import me.greenadine.echobot.EchoBot;
-import me.greenadine.echobot.handlers.CommandHandler;
+import me.greenadine.echobot.commands.EchobotCommand;
+import me.greenadine.echobot.commands.CommandHandler;
 import me.greenadine.echobot.handlers.Notifier;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.entity.user.User;
 import org.javacord.api.event.message.MessageCreateEvent;
-import org.javacord.api.listener.message.MessageCreateListener;
 
 import java.awt.*;
 
-public class NotificationsCommand implements MessageCreateListener {
+public class NotificationsCommand implements EchobotCommand {
+
+    // Command info
+    public String getName() {
+        return "notifications";
+    }
+
+    public String getDescription() {
+        return "Check or manage your notification settings.";
+    }
+
+    public String getDetails() {
+        return "Check or manage your notification settings.\n\n" +
+                "**Notification types**\n" +
+                "``repeat``: Get a notification when a new Repeat build is available to the public.\n" +
+                "``repeat-patron``: Get a notification when a new Repeat build is initially released, and only available for patrons.\n" +
+                "``patreon``: Get a notification when Shirokoi publishes a new post on his Patreon.\n" +
+                "``all``: Opt-in or out of all notifications.";
+    }
+
+    public String getUsage() {
+        return "e!notifications [type] [on/off|toggle]";
+    }
+
+    public String getArguments() {
+        return "``type`` - Which type of notifications to manage.";
+    }
+
+    public String getAliases() { return "not"; }
 
     private Notifier notifier = EchoBot.notifier;
 
     @Override
     public void onMessageCreate(MessageCreateEvent e) {
-        CommandHandler handler = new CommandHandler(e);
+        CommandHandler handler = new CommandHandler(this, e);
 
-        if (handler.isCommand("notifications")) {
-            User user = handler.getUser();
+        if (!handler.isCommand()) { return; }
 
-            if (user == null || user.isBot()) {
+        if (handler.getUser().isPresent()) {
+            User user = handler.getUser().get();
+
+            if (user.isBot()) {
                 return;
             }
 
